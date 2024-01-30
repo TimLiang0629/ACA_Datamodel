@@ -1,0 +1,9 @@
+SELECT i.Name AS IngredientName, AVG(biu.QuantityUsed) AS AverageQuantityUsed, AVG(qc.Result) AS AverageQuality
+FROM BatchIngredientUsage biu
+JOIN Ingredient i ON biu.IngredientID = i.ID
+JOIN BrewBatch bb ON biu.BatchID = bb.ID
+JOIN QualityCheck qc ON bb.ID = qc.BatchID
+GROUP BY i.Name
+HAVING AverageQuality >= (SELECT AVG(Result) FROM QualityCheck)
+ORDER BY AverageQuantityUsed;
+# This query identifies the average quantity of each ingredient used across all batches and the corresponding average quality score of those batches. By focusing only on batches with a quality score at or above the overall average, we can understand which ingredient quantities contribute to high-quality beer. Furthermore, we can use this result to fine-tune our recipes to be both cost-effective and environmentally friendly while maintaining the premium quality that defines our brand. This strategic approach to ingredient management can lead to a more sustainable business model and reinforce our reputation for excellence in the craft beer market.
