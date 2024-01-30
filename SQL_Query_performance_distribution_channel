@@ -1,0 +1,19 @@
+SELECT 
+    dc.Type AS ChannelType, 
+    SUM(so.TotalAmount) AS TotalSales,
+    (SELECT dc2.Name 
+     FROM DistributionChannel dc2 
+     INNER JOIN SalesOrder so2 ON so2.ID = dc2.ID 
+     WHERE dc2.Type = dc.Type 
+     GROUP BY dc2.Name 
+     ORDER BY SUM(so2.TotalAmount) DESC 
+     LIMIT 1) AS TopChannel
+FROM 
+    SalesOrder so 
+INNER JOIN 
+    DistributionChannel dc ON so.ID = dc.ID 
+GROUP BY 
+    dc.Type 
+ORDER BY 
+TotalSales DESC;
+# The results from the distribution channel query will reveal which channels are generating the most sales and may benefit from increased marketing efforts. For instance, traditional distributors channel brings in a high volume of revenue, we could build on customer loyalty by offering more discount and special price. Conversely, online shopping is underperforming, we might consider online promotional events or special offers to boost sales through that channel. The key channel indicated by the “Top Channel” result suggests where the highest sales are concentrated and, therefore, where marketing efforts and customer engagement strategies could be most impactful. The aim is to reinforce successful channels while bolstering those with growth potential, thereby optimizing sales and market presence across the board.
