@@ -1,0 +1,18 @@
+SELECT 
+    p.Category, 
+    EXTRACT(YEAR_MONTH FROM so.OrderDate) AS YearMonth, 
+    SUM(so.TotalAmount) AS TotalSales
+FROM 
+    SalesOrder so
+INNER JOIN 
+    Product p ON so.ID = p.ID
+WHERE 
+    p.Category IN ('Seasonal', 'Core')
+GROUP BY 
+    YearMonth, 
+    p.Category
+ORDER BY 
+    YearMonth, 
+p.Category;
+
+#Explanation: The sales data for seasonal and core beers across different months in recent years indicates periodic fluctuations in consumer preferences. Seasonal beers likely see peaks corresponding to their respective seasons, while core beers maintain a steadier sales volume year-round. This trend suggests that while our core beers provide a reliable revenue stream, there is significant potential to capitalize on the popularity of seasonal beers during their peak times. Aligning production schedules to increase the availability of seasonal beers during these peak periods can maximize sales.
